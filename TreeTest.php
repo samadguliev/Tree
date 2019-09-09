@@ -6,20 +6,22 @@ class TreeTest extends TestCase
     public function testGetDir()
     {
         $expected = [
-            'somefile.php',
-            'somepoddir'
+            'empty.txt',
+            'dist',
+            'src'
         ];
         $tree = new Tree(true);
-        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/somedir/'));
+        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/data/'));
     }
 
     public function testGetDirOnly()
     {
         $expected = [
-            'somepoddir'
+            'dist',
+            'src'
         ];
         $tree = new Tree(false);
-        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/somedir/'));
+        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/data/'));
     }
 
 }
