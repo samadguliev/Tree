@@ -3,16 +3,23 @@ use PHPUnit\Framework\TestCase;
 
 class TreeTest extends TestCase
 {
-
-    public function test1plus2equal3()
+    public function testGetDir()
     {
-        $tree = new Tree();
-        $this->assertEquals(3, $tree->sum(1, 2));
+        $expected = [
+            'somefile.php',
+            'somepoddir'
+        ];
+        $tree = new Tree(true);
+        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/somedir/'));
     }
 
-    public function test2plus2equal4()
+    public function testGetDirOnly()
     {
-        $tree = new Tree();
-        $this->assertEquals(4, $tree->sum(2, 2));
+        $expected = [
+            'somepoddir'
+        ];
+        $tree = new Tree(false);
+        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/somedir/'));
     }
+
 }
