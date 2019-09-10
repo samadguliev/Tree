@@ -4,23 +4,24 @@ class Tree
 {
     private $isShowFiles = false;
 
-    public function __construct($isShowFiles)
+    public function __construct($directoryPath, $isShowFiles)
     {
+        $this->directoryPath = $directoryPath;
         $this->isShowFiles = $isShowFiles;
     }
 
-    public function getDir($path)
+    public function getDirectoryTree($path)
     {
         $files = [];
         $handle = opendir($path);
 
         while ($file = readdir($handle)) {
-            if ($file === '.' || $file === '..') {
+            if ($file === '.' || $file === '..' || $file === '.git' || $file === '.idea') {
                 continue;
             }
 
             if (is_dir($path . '/' . $file)) {
-                $dir = $this->getDir($path . '/' . $file);
+                $dir = $this->getDirectoryTree($path . '/' . $file);
                 if (empty($dir)) {
                     $files[] = $file;
                 } else {
@@ -35,5 +36,22 @@ class Tree
         }
         closedir($handle);
         return $files;
+    }
+
+    public function printTree ($arr, $indent='')
+    {
+        $lvl = 0;
+        echo "\n";
+        if ($arr) {
+            foreach ($arr as $key => $value) {
+                if (is_array($value)) {
+                    echo '   '.$indent.$key;
+                    $this->printTree($value, $indent . '    ');
+                } else {
+                    //  Output
+                    echo "$indent $value \n";
+                }
+            }
+        }
     }
 }

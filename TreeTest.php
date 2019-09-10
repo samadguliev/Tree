@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 
 class TreeTest extends TestCase
 {
-    public function testGetDir()
+    public function testGetDirectoryTree()
     {
         $expected = [
             'vue' => [
@@ -11,11 +11,11 @@ class TreeTest extends TestCase
             ],
             'zzz.txt (21b)'
         ];
-        $tree = new Tree(true);
-        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/data/src'));
+        $tree = new Tree(__DIR__ . '/data/src',true);
+        $this->assertEquals($expected, $tree->getDirectoryTree(__DIR__ . '/data/src'));
     }
 
-    public function testGetDirOnly()
+    public function testGetDirectoryTreeWithoutFiles()
     {
         $expected = [
             'dist' => [
@@ -26,11 +26,8 @@ class TreeTest extends TestCase
             'src' => [
                 'vue'
             ]
-
-
         ];
-        $tree = new Tree(false);
-        $this->assertEquals($expected, $tree->getDir(__DIR__ . '/data'));
+        $tree = new Tree(__DIR__ . '/data', false);
+        $this->assertEquals($expected, $tree->getDirectoryTree(__DIR__ . '/data'));
     }
-
 }
