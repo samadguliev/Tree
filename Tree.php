@@ -19,7 +19,17 @@ class Tree
                 continue;
             }
 
-            if (is_dir($path . $file) || $this->isShowFiles) {
+            if (is_dir($path . '/' . $file)) {
+                $dir = $this->getDir($path . '/' . $file);
+                if (empty($dir)) {
+                    $files[] = $file;
+                } else {
+                    $files[$file] = $dir;
+                }
+            } elseif ($this->isShowFiles) {
+                $fileSize = filesize($path . '/' . $file);
+                $fileSizeText = $fileSize ? (' (' . $fileSize . 'b)') : ' (empty)';
+                $file .= $fileSizeText;
                 $files[] = $file;
             }
         }
