@@ -12,7 +12,7 @@ class TreeTest extends TestCase
             'zzz.txt (21b)'
         ];
         $tree = new Tree(__DIR__ . '/data/src',true);
-        $this->assertEquals($expected, $tree->getDirectoryTree(__DIR__ . '/data/src'));
+        $this->assertEquals($expected, $tree->getDirectoryTree($tree->directoryPath));
     }
 
     public function testGetDirectoryTreeWithoutFiles()
@@ -28,6 +28,6 @@ class TreeTest extends TestCase
             ]
         ];
         $tree = new Tree(__DIR__ . '/data', false);
-        $this->assertEquals($expected, $tree->getDirectoryTree(__DIR__ . '/data'));
+        $this->assertEquals($expected, $tree->getDirectoryTree($tree->directoryPath));
     }
 }

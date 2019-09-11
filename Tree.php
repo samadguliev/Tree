@@ -12,10 +12,10 @@ class Tree
 
     public function getDirectoryTree($path)
     {
+        $directoryFiles = scandir($path);
         $files = [];
-        $handle = opendir($path);
 
-        while ($file = readdir($handle)) {
+        foreach ($directoryFiles as $file) {
             if ($file === '.' || $file === '..' || $file === '.git' || $file === '.idea') {
                 continue;
             }
@@ -34,24 +34,29 @@ class Tree
                 $files[] = $file;
             }
         }
-        closedir($handle);
         return $files;
     }
 
-    public function printTree ($arr, $indent='')
+    public function printTree ($filesArray, $indent=' ', $lvl = 0)
     {
-        $lvl = 0;
         echo "\n";
-        if ($arr) {
-            foreach ($arr as $key => $value) {
-                if (is_array($value)) {
-                    echo '   '.$indent.$key;
-                    $this->printTree($value, $indent . '    ');
-                } else {
-                    //  Output
-                    echo "$indent $value \n";
-                }
+        if (!$filesArray) {
+            return;
+        }
+        foreach ($filesArray as $key => $file) {
+            $filePrefix = '';
+            if ($lvl > 0) {
+                $filePrefix = '└── ';
+            } elseif ($lvl == 0) {
+                $filePrefix = '├── ';
+            }
+            if (is_array($file)) {
+                echo $indent . '├── ' . $key;
+                $this->printTree($file, $indent . '     ', $lvl + 1);
+            } else {
+                echo $indent . $filePrefix . $file . "\n";
             }
         }
+
     }
 }
