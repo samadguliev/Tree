@@ -30,4 +30,18 @@ class TreeTest extends TestCase
         $tree = new Tree(__DIR__ . '/data', false);
         $this->assertEquals($expected, $tree->getDirectoryTree($tree->directoryPath));
     }
+
+    public function testPrintTree ()
+    {
+        $expected = '
+├── css
+│    └── app.css (14b)
+├── html
+│    └── index.html (15b)
+└── js
+     └── app.js (13b)
+';
+        $tree = new Tree(__DIR__ . '/data/dist', true);
+        $this->assertEquals($expected, $tree->printTree($tree->getDirectoryTree($tree->directoryPath)));
+    }
 }

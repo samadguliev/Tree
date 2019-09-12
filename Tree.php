@@ -37,26 +37,28 @@ class Tree
         return $files;
     }
 
-    public function printTree ($filesArray, $indent=' ', $lvl = 0)
+    public function printTree ($filesArray, $indent='')
     {
-        echo "\n";
+        $resultStr = "\n";
         if (!$filesArray) {
-            return;
+            return $resultStr;
         }
         foreach ($filesArray as $key => $file) {
-            $filePrefix = '';
-            if ($lvl > 0) {
+            $filePrefix = '├── ';
+            $indentSlash = '     ';
+            if ($file == end($filesArray)) {
                 $filePrefix = '└── ';
-            } elseif ($lvl == 0) {
-                $filePrefix = '├── ';
-            }
-            if (is_array($file)) {
-                echo $indent . '├── ' . $key;
-                $this->printTree($file, $indent . '     ', $lvl + 1);
             } else {
-                echo $indent . $filePrefix . $file . "\n";
+                $indentSlash = '│    ';
+            }
+
+            if (is_array($file)) {
+                $resultStr .= $indent . $filePrefix . $key;
+                $resultStr .= $this->printTree($file, $indent . $indentSlash);
+            } else {
+                $resultStr .= $indent . $filePrefix . $file . "\n";
             }
         }
-
+        return $resultStr;
     }
 }
