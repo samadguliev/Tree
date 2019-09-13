@@ -1,9 +1,12 @@
 <?php
 
-require_once ('Tree.php');
+require_once ('bootstrap.php');
 
 $isShowFiles = ((isset($argv[2]) && $argv[2] === '-f')) ? true : false;
 $directoryPath = $argv[1];
 
-$tree = new Tree($directoryPath, $isShowFiles);
-print_r($tree->printTree($tree->getDirectoryTree($tree->directoryPath)));
+//$writer = new WriterStdout();
+//$writer = new WriterFile('./text.txt');
+$writer = new WriterBuffer();
+$tree = new Tree($writer);
+$tree->showTree($directoryPath, $isShowFiles);

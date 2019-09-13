@@ -2,63 +2,52 @@
 
 class Tree
 {
+    private $writer = null;
     private $isShowFiles = false;
 
-    public function __construct($directoryPath, $isShowFiles)
+    public function __construct(\WriterInterface $writer)
     {
-        $this->directoryPath = $directoryPath;
-        $this->isShowFiles = $isShowFiles;
+        $this->writer = $writer;
     }
 
-    public function getDirectoryTree($path)
+    public function showTree($directoryPath, $isShowFiles, $indent='')
     {
-        $directoryFiles = scandir($path);
-        $files = [];
-
+        $directoryFiles = scandir($directoryPath);
+        natcasesort($directoryFiles);
+        $this->printStr("\n");
+        foreach ($directoryFiles as $key => $file) {
+            if (!is_dir($directoryPath . '/' . $file )&& !$isShowFiles) {
+                unset($directoryFiles[$key]);
+            }
+        }
         foreach ($directoryFiles as $file) {
             if ($file === '.' || $file === '..' || $file === '.git' || $file === '.idea') {
                 continue;
             }
 
-            if (is_dir($path . '/' . $file)) {
-                $dir = $this->getDirectoryTree($path . '/' . $file);
-                if (empty($dir)) {
-                    $files[] = $file;
-                } else {
-                    $files[$file] = $dir;
-                }
-            } elseif ($this->isShowFiles) {
-                $fileSize = filesize($path . '/' . $file);
+            $filePrefix = '├── ';
+            $indentSlash = '     ';
+            if ($file == end($directoryFiles)) {
+                $filePrefix = '└── ';
+            } else {
+                $indentSlash = '│   ';
+            }
+
+            if (is_dir($directoryPath . '/' . $file)) {
+                $this->printStr($indent . $filePrefix . $file);
+                $this->showTree($directoryPath . '/' . $file, $isShowFiles, $indent . $indentSlash);
+            } elseif ($isShowFiles) {
+                $fileSize = filesize($directoryPath . '/' . $file);
                 $fileSizeText = $fileSize ? (' (' . $fileSize . 'b)') : ' (empty)';
                 $file .= $fileSizeText;
+                $this->printStr($indent . $filePrefix . $file . "\n");
                 $files[] = $file;
             }
         }
-        return $files;
     }
 
-    public function printTree ($filesArray, $indent='')
+    private function printStr(String $str)
     {
-        $resultStr = "\n";
-        if (!$filesArray) {
-            return $resultStr;
-        }
-        foreach ($filesArray as $key => $file) {
-            $filePrefix = '├── ';
-            $indentSlash = '     ';
-            if ($file == end($filesArray)) {
-                $filePrefix = '└── ';
-            } else {
-                $indentSlash = '│    ';
-            }
-
-            if (is_array($file)) {
-                $resultStr .= $indent . $filePrefix . $key;
-                $resultStr .= $this->printTree($file, $indent . $indentSlash);
-            } else {
-                $resultStr .= $indent . $filePrefix . $file . "\n";
-            }
-        }
-        return $resultStr;
+        $this->writer->printStr($str);
     }
 }
