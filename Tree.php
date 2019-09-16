@@ -26,7 +26,7 @@ class Tree
             }
 
             $filePrefix = '├── ';
-            $indentSlash = '     ';
+            $indentSlash = '    ';
             if ($file == end($directoryFiles)) {
                 $filePrefix = '└── ';
             } else {
@@ -41,7 +41,6 @@ class Tree
                 $fileSizeText = $fileSize ? (' (' . $fileSize . 'b)') : ' (empty)';
                 $file .= $fileSizeText;
                 $this->printStr($indent . $filePrefix . $file . "\n");
-                $files[] = $file;
             }
         }
     }
