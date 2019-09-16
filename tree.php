@@ -7,6 +7,5 @@ $directoryPath = $argv[1];
 
 $writer = new WriterStdout();
 //$writer = new WriterFile('./text.txt');
-//$writer = new WriterBuffer();
-$tree = new Tree($writer);
-$tree->showTree($directoryPath, $isShowFiles);
+$tree = new Tree($writer, $isShowFiles);
+$tree->showTree($directoryPath);
