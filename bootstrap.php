@@ -1,5 +1,6 @@
 <?php
 
+require_once('vendor/autoload.php');
 require_once('WriterInterface.php');
 require_once('WriterStdout.php');
 require_once('WriterFile.php');

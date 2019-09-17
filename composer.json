@@ -1,0 +1,15 @@
+{
+    "name": "samad/tree",
+    "authors": [
+        {
+            "name": "Samad Guliev",
+            "email": "samadguliev@mail.ru"
+        }
+    ],
+    "require": {
+        "mikey179/vfsstream": "^1.6"
+    },
+    "require-dev": {
+        "mikey179/vfsstream": "^1.6"
+    }
+}
